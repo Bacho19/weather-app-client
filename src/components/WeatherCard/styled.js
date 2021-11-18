@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const CardWrapper = styled.div`
   width: 480px;
   height: 160px;
-  background-color: #b0a8fd;
+  background-color: #649fd2;
   border-radius: 15px;
   display: flex;
   justify-content: center;
@@ -38,4 +38,6 @@ export const CardVerticalBar = styled.span`
   color: rgba(255, 255, 255, 0.5);
 `;
 
-export const CardIcon = styled.div``;
+export const CardIcon = styled.img`
+  width: 80px;
+`;

@@ -10,7 +10,7 @@ import {
   CardWrapper,
 } from "./styled";
 
-const WeatherCard = ({ title, city, temp }) => {
+const WeatherCard = ({ title, city, temp, icon }) => {
   return (
     <CardWrapper>
       <CardContent>
@@ -22,7 +22,7 @@ const WeatherCard = ({ title, city, temp }) => {
             <CardTitle size="18">{city}</CardTitle>
           </CardTempInfo>
         </CardInfo>
-        <CardIcon>wind icon</CardIcon>
+        <CardIcon src={`http://openweathermap.org/img/w/${icon}.png`} />
       </CardContent>
     </CardWrapper>
   );
@@ -32,6 +32,7 @@ WeatherCard.propTypes = {
   title: PropTypes.string,
   city: PropTypes.string,
   temp: PropTypes.number,
+  icon: PropTypes.string,
 };
 
 export default WeatherCard;
