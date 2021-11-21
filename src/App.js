@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { ThemeProvider } from "styled-components";
+import { SearchCityContext } from "./context/SearchCityContext";
+import { WeatherDataContext } from "./context/WeatherDataContext";
+import { ThemeContext, themes } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
-import WeatherCard from "./components/WeatherCard";
 import SideMenu from "./components/SideMenu";
 import { router } from "./router";
 import { GlobalStyle } from "./globalStyles";
+import { lightTheme, darkTheme } from "./themes";
+
+// sidebaris sichqare sxvadasxva zomis ekranebze unda ikos erti
+// did ekranze unda qrebodes +
+// ar unda ikos damokidebuli navbaris simaghleze +
+// sidemenu unda ikos gamchvirvale +
+// scrollis dablokva sidemenus gaxsnis dros
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
-  const [value, setValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [isMenuHidden, setIsMenuHidden] = useState(true);
+  const [currentTheme, setCurrentTheme] = useState(themes.LIGHT);
 
   useEffect(() => {
     fetchWeatherData();
@@ -27,37 +38,40 @@ const App = () => {
     }
   };
 
-  const handleClick = () => {
+  const handleSearchClick = (value) => {
+    setIsMenuHidden(true);
     fetchWeatherData(value);
   };
 
   return (
-    <>
+    <ThemeProvider
+      theme={currentTheme === themes.LIGHT ? lightTheme : darkTheme}
+    >
       <GlobalStyle />
-      <SideMenu isMenuHidden={isMenuHidden} />
-      <div>
-        <Navbar isMenuHidden={isMenuHidden} setIsMenuHidden={setIsMenuHidden} />
-        <input value={value} onChange={(e) => setValue(e.target.value)} />
-        <button onClick={handleClick}>Search</button>
-        <WeatherCard
-          city={weatherData?.name}
-          temp={Math.floor(weatherData?.main?.temp - 273.15)}
-          title={
-            weatherData &&
-            weatherData.weather &&
-            weatherData.weather[0] &&
-            weatherData.weather[0].main
-          }
-          icon={
-            weatherData &&
-            weatherData.weather &&
-            weatherData.weather[0] &&
-            weatherData.weather[0].icon
-          }
-        />
-        {router}
-      </div>
-    </>
+      <ThemeContext.Provider value={currentTheme}>
+        <SearchCityContext.Provider value={searchValue}>
+          <Navbar
+            isMenuHidden={isMenuHidden}
+            setIsMenuHidden={setIsMenuHidden}
+            setSearchValue={setSearchValue}
+            handleSearchClick={handleSearchClick}
+            setCurrentTheme={setCurrentTheme}
+          />
+          <div className="app-wrapper">
+            <SideMenu
+              isMenuHidden={isMenuHidden}
+              setIsMenuHidden={setIsMenuHidden}
+              setSearchValue={setSearchValue}
+              handleSearchClick={handleSearchClick}
+              setCurrentTheme={setCurrentTheme}
+            />
+            <WeatherDataContext.Provider value={weatherData}>
+              {router}
+            </WeatherDataContext.Provider>
+          </div>
+        </SearchCityContext.Provider>
+      </ThemeContext.Provider>
+    </ThemeProvider>
   );
 };
 

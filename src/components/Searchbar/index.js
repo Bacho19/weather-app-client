@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { SearchCityContext } from "../../context/SearchCityContext";
 import { SearchbarForm, SearchbarInput } from "./styled";
 import { GoSearch } from "react-icons/go";
 
-const Searchbar = () => {
-  const [city, setCity] = useState("");
+const Searchbar = ({ setSearchValue, handleSearchClick }) => {
+  const searchValue = useContext(SearchCityContext);
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    if (city) {
-      console.log("searching weather in " + city);
-      setCity("");
+    if (searchValue) {
+      handleSearchClick(searchValue);
+      setSearchValue("");
     }
   };
 
@@ -18,8 +19,8 @@ const Searchbar = () => {
       <SearchbarInput
         type="text"
         placeholder="Enter the city"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
       />
       <GoSearch style={{ color: "#555" }} />
     </SearchbarForm>

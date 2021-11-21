@@ -1,22 +1,59 @@
 import React from "react";
-import { NavbarMenuItem } from "../Navbar/styled";
+import { NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
 
-const SideMenu = ({ isMenuHidden }) => {
+const SideMenu = ({
+  isMenuHidden,
+  setIsMenuHidden,
+  setSearchValue,
+  handleSearchClick,
+  setCurrentTheme,
+}) => {
   return (
     <SideMenuWrapper isHidden={isMenuHidden}>
       <SideMenuContent>
-        <Searchbar />
+        <Searchbar
+          setSearchValue={setSearchValue}
+          handleSearchClick={handleSearchClick}
+        />
         <SideMenuNav>
-          <NavbarMenuItem href="#" active>
+          <NavLink
+            to="/"
+            onClick={() => {
+              setIsMenuHidden(true);
+            }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
             Current
-          </NavbarMenuItem>
-          <NavbarMenuItem href="#">Daily</NavbarMenuItem>
-          <NavbarMenuItem href="#">Hourly</NavbarMenuItem>
+          </NavLink>
+          <NavLink
+            to="/daily"
+            onClick={() => {
+              setIsMenuHidden(true);
+            }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
+            Daily
+          </NavLink>
+          <NavLink
+            to="/hourly"
+            onClick={() => {
+              setIsMenuHidden(true);
+            }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
+            Hourly
+          </NavLink>
         </SideMenuNav>
-        <ThemeSwitch />
+        <ThemeSwitch setCurrentTheme={setCurrentTheme} />
       </SideMenuContent>
     </SideMenuWrapper>
   );

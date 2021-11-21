@@ -1,28 +1,59 @@
 import React from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
-import { AiOutlineMenu } from "react-icons/ai";
 import {
   NavbarContent,
   NavbarWrapper,
   NavbarMenu,
-  NavbarMenuItem,
   NavbarResponseMenu,
 } from "./styled";
 
-const Navbar = ({ setIsMenuHidden, isMenuHidden }) => {
+const Navbar = ({
+  setIsMenuHidden,
+  isMenuHidden,
+  setSearchValue,
+  handleSearchClick,
+  setCurrentTheme,
+}) => {
   return (
     <NavbarWrapper>
       <NavbarContent>
-        <Searchbar />
+        <Searchbar
+          setSearchValue={setSearchValue}
+          handleSearchClick={handleSearchClick}
+        />
         <NavbarMenu>
-          <NavbarMenuItem active href="#">
+          <NavLink
+            to="/"
+            style={{ textDecoration: "none" }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
             Current
-          </NavbarMenuItem>
-          <NavbarMenuItem href="#">Daily</NavbarMenuItem>
-          <NavbarMenuItem href="#">Hourly</NavbarMenuItem>
+          </NavLink>
+          <NavLink
+            to="/daily"
+            style={{ textDecoration: "none" }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
+            Daily
+          </NavLink>
+          <NavLink
+            to="/hourly"
+            style={{ textDecoration: "none" }}
+            className={({ isActive }) =>
+              isActive ? "menu_item_active" : "menu_item"
+            }
+          >
+            Hourly
+          </NavLink>
         </NavbarMenu>
-        <ThemeSwitch />
+        <ThemeSwitch setCurrentTheme={setCurrentTheme} />
       </NavbarContent>
       <NavbarResponseMenu
         active={!isMenuHidden}
