@@ -3,6 +3,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
+import PropTypes from "prop-types";
+
 import {
   NavbarContent,
   NavbarWrapper,
@@ -63,6 +65,14 @@ const Navbar = ({
       </NavbarResponseMenu>
     </NavbarWrapper>
   );
+};
+
+Navbar.propTypes = {
+  setIsMenuHidden: PropTypes.func,
+  isMenuHidden: PropTypes.bool,
+  setSearchValue: PropTypes.func,
+  handleSearchClick: PropTypes.func,
+  setCurrentTheme: PropTypes.func,
 };
 
 export default Navbar;

@@ -1,18 +1,20 @@
 import styled from "styled-components";
 
 export const CardWrapper = styled.div`
-  width: 480px;
-  height: 160px;
-  background-color: #649fd2;
+  width: 270px;
+  height: 370px;
+  background-color: var(--dark-blue); //#649fd2
   border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--white);
+  margin-bottom: 70px;
 `;
 
 export const CardContent = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 85%;

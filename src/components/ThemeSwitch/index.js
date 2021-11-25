@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { ThemeContext, themes } from "../../context/ThemeContext";
+import { ThemeContext, themes } from "../../context/Theme";
 import { ThemeSwitchWrapper } from "./styled";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
+import PropTypes from "prop-types";
 
 const ThemeSwitch = ({ setCurrentTheme }) => {
   const theme = useContext(ThemeContext);
@@ -21,6 +22,10 @@ const ThemeSwitch = ({ setCurrentTheme }) => {
       )}
     </ThemeSwitchWrapper>
   );
+};
+
+ThemeSwitch.propTypes = {
+  setCurrentTheme: PropTypes.func,
 };
 
 export default ThemeSwitch;

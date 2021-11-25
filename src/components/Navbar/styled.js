@@ -4,7 +4,7 @@ export const NavbarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.darkBlue};
+  background-color: var(--dark-blue);
   width: 100%;
   height: 60px;
   margin: 0 auto;
@@ -25,7 +25,7 @@ export const NavbarContent = styled.div`
 export const NavbarMenu = styled.nav`
   display: flex;
   justify-content: space-between;
-  width: 220px;
+  width: 225px;
 `;
 
 export const NavbarResponseMenu = styled.div`

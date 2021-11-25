@@ -1,50 +1,75 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+  :root {
+    --bg-color: ${(props) => props.theme.bgColor};
+    --font-color: ${(props) => props.theme.fontColor};
+    --dark-blue: ${(props) => props.theme.darkBlue};
+    --white: ${(props) => props.theme.white};
+    --side-menu-color: ${(props) => props.theme.sideMenuColor};
+  }
+  
   * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box; 
+    box-sizing: border-box;
   }
-
+  
   body {
     font-family: "Roboto", sans-serif;
-    color: ${(props) => props.theme.fontColor};
-    background-color:  ${(props) => props.theme.body};
-    transition: all 0.5s ease;
+    color: var(--font-color);
+    background-color:  var(--bg-color);
+    overflow-y:  ${(props) => (props.isMenuHidden ? "auto" : "hidden")};
   }
   .app_wrapper {
   position: "relative";
   }
   ::placeholder {
-    color: ${(props) => props.theme.fontColor};
+    color: var(--font-color);
   }
   .container {
     padding: 0 2.5%;
-    padding-top: 25px;
+    padding-top: 45px;
   }
 
   .menu_item {
     font-size: 14px;
     text-decoration: none;
-    color: ${(props) => props.theme.white};
-    border: 1px solid ${(props) => props.theme.white};
+    color:  var(--white);
+    border: 1px solid  var(--white);
     padding: 5px 10px;
     transition: 0.3s;
   }
 
   .menu_item:hover {
-    background-color: ${(props) => props.theme.white};
-    color: ${(props) => props.theme.darkBlue};
+    background-color:  var(--white);
+    color: var(--dark-blue);
   }
 
   .menu_item_active {
     font-size: 14px;
     text-decoration: none;
-    background-color: ${(props) => props.theme.white};
-    color: ${(props) => props.theme.darkBlue};
-    border: 1px solid ${(props) => props.theme.white};
+    background-color: var(--white);
+    color:  var(--dark-blue);
+    border: 1px solid var(--white);
     padding: 5px 10px;
     transition: 0.3s;
+  }
+
+  .weather-cards_wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 270px);
+    grid-column-gap: 35px;
+    justify-content: space-around;
+
+    margin-top: 30px;
+  }
+
+  .page-name__title {
+    font-size: 38px;
+    background-color: var(--dark-blue);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 7px;
   }
 `;

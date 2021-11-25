@@ -1,27 +1,39 @@
 import React, { useContext } from "react";
-import { WeatherDataContext } from "../../context/WeatherDataContext";
+import { WeatherDataContext } from "../../context/WeatherData";
 import WeatherCard from "../../components/WeatherCard";
 import {} from "./styled";
+import { months, shortDays } from "../../monthsDays";
+import { CityNameContext } from "../../context/CityName";
 
 const CurrentPage = () => {
-  const weatherData = useContext(WeatherDataContext);
+  const { current } = useContext(WeatherDataContext);
+  const cityName = useContext(CityNameContext);
 
   return (
     <div className="container">
       <WeatherCard
-        city={weatherData?.name}
-        temp={Math.floor(weatherData?.main?.temp - 273.15)}
+        temp={Math.floor(current?.temp - 273.15)}
+        city={cityName}
         title={
-          weatherData &&
-          weatherData.weather &&
-          weatherData.weather[0] &&
-          weatherData.weather[0].main
+          current &&
+          current.weather &&
+          current.weather[0] &&
+          current.weather[0].main
         }
         icon={
-          weatherData &&
-          weatherData.weather &&
-          weatherData.weather[0] &&
-          weatherData.weather[0].icon
+          current &&
+          current.weather &&
+          current.weather[0] &&
+          current.weather[0].icon
+        }
+        date={new Date(current?.dt * 1000).getDate()}
+        day={shortDays[new Date(current?.dt * 1000).getDay()]}
+        month={months[new Date(current?.dt * 1000).getMonth()]}
+        hours={new Date(current?.dt * 1000).getHours().toString()}
+        minutes={
+          new Date(current?.dt * 1000).getMinutes() < 10
+            ? "0" + new Date(current?.dt * 1000).getMinutes().toString()
+            : new Date(current?.dt * 1000).getMinutes().toString()
         }
       />
     </div>

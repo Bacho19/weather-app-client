@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
+import PropTypes from "prop-types";
 
 const SideMenu = ({
   isMenuHidden,
@@ -57,6 +58,14 @@ const SideMenu = ({
       </SideMenuContent>
     </SideMenuWrapper>
   );
+};
+
+SideMenu.propTypes = {
+  isMenuHidden: PropTypes.bool,
+  setIsMenuHidden: PropTypes.func,
+  setSearchValue: PropTypes.func,
+  handleSearchClick: PropTypes.func,
+  setCurrentTheme: PropTypes.func,
 };
 
 export default SideMenu;

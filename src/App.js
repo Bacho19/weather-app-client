@@ -1,53 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import { SearchCityContext } from "./context/SearchCityContext";
-import { WeatherDataContext } from "./context/WeatherDataContext";
-import { ThemeContext, themes } from "./context/ThemeContext";
+import { SearchCityContext } from "./context/SearchCity";
+import { WeatherDataContext } from "./context/WeatherData";
+import { ThemeContext, themes } from "./context/Theme";
+import { CityNameContext } from "./context/CityName";
 import Navbar from "./components/Navbar";
 import SideMenu from "./components/SideMenu";
-import { router } from "./router";
+import { RouterPages } from "./router";
 import { GlobalStyle } from "./globalStyles";
 import { lightTheme, darkTheme } from "./themes";
 
-// sidebaris sichqare sxvadasxva zomis ekranebze unda ikos erti
+// sidebaris sichqare sxvadasxva zomis ekranebze unda ikos erti // setInterval
 // did ekranze unda qrebodes +
 // ar unda ikos damokidebuli navbaris simaghleze +
 // sidemenu unda ikos gamchvirvale +
-// scrollis dablokva sidemenus gaxsnis dros
+// scrollis dablokva sidemenus gaxsnis dros // overflow-y: hidden +
+// koordinatebi +
+// loader +
+// pages +
 
 const App = () => {
   const [weatherData, setWeatherData] = useState({});
+  const [cityName, setCityName] = useState("Tbilisi");
   const [searchValue, setSearchValue] = useState("");
   const [isMenuHidden, setIsMenuHidden] = useState(true);
   const [currentTheme, setCurrentTheme] = useState(themes.LIGHT);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchWeatherData();
+    fetchWeatherData(41.6941, 44.8337);
   }, []);
 
-  const fetchWeatherData = async (city = "tbilisi") => {
+  const fetchWeatherData = async (lat, lon) => {
     try {
+      setIsLoading(true);
       const weatherJson = await fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=51786ce34d39a0ce7acd07aef05848e4`
-      )
-        .then((data) => data.json())
-        .catch((e) => console.log(e, "error"));
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=51786ce34d39a0ce7acd07aef05848e4`
+      ).then((data) => data.json());
       setWeatherData(weatherJson);
+      setIsLoading(false);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const handleSearchClick = (value) => {
+  const handleSearchClick = (lat, lon, cityName) => {
     setIsMenuHidden(true);
-    fetchWeatherData(value);
+    fetchWeatherData(lat, lon);
+    setCityName(cityName);
   };
 
   return (
     <ThemeProvider
       theme={currentTheme === themes.LIGHT ? lightTheme : darkTheme}
     >
-      <GlobalStyle />
+      <GlobalStyle isMenuHidden={isMenuHidden} />
       <ThemeContext.Provider value={currentTheme}>
         <SearchCityContext.Provider value={searchValue}>
           <Navbar
@@ -66,7 +73,9 @@ const App = () => {
               setCurrentTheme={setCurrentTheme}
             />
             <WeatherDataContext.Provider value={weatherData}>
-              {router}
+              <CityNameContext.Provider value={cityName}>
+                <RouterPages isLoading={isLoading} />
+              </CityNameContext.Provider>
             </WeatherDataContext.Provider>
           </div>
         </SearchCityContext.Provider>
