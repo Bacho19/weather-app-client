@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { WeatherDataContext } from "../../context/WeatherData";
 import WeatherCard from "../../components/WeatherCard";
-import {} from "./styled";
 import { months, shortDays } from "../../monthsDays";
 import { CityNameContext } from "../../context/CityName";
+import { CurrentPageWrapper } from "./styled";
 
 const CurrentPage = () => {
   const { current } = useContext(WeatherDataContext);
   const cityName = useContext(CityNameContext);
 
   return (
-    <div className="container">
+    <CurrentPageWrapper>
       <WeatherCard
         temp={Math.floor(current?.temp - 273.15)}
         city={cityName}
@@ -36,7 +36,7 @@ const CurrentPage = () => {
             : new Date(current?.dt * 1000).getMinutes().toString()
         }
       />
-    </div>
+    </CurrentPageWrapper>
   );
 };
 

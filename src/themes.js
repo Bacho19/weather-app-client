@@ -11,5 +11,5 @@ export const darkTheme = {
   fontColor: "#d4d4d4",
   darkBlue: "#292929",
   white: "#8a8a8a",
-  sideMenuColor: "rgba(0, 0, 0, 0.70)",
+  sideMenuColor: "rgba(0, 0, 0, 0.80)",
 };

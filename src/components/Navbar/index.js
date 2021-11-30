@@ -18,7 +18,18 @@ const Navbar = ({
   setSearchValue,
   handleSearchClick,
   setCurrentTheme,
+  sideMenuHidding,
+  sideMenuShowing,
 }) => {
+  const handleNavbarButton = () => {
+    setIsMenuHidden((prev) => !prev);
+    if (isMenuHidden) {
+      sideMenuShowing();
+    } else {
+      sideMenuHidding();
+    }
+  };
+
   return (
     <NavbarWrapper>
       <NavbarContent>
@@ -57,10 +68,7 @@ const Navbar = ({
         </NavbarMenu>
         <ThemeSwitch setCurrentTheme={setCurrentTheme} />
       </NavbarContent>
-      <NavbarResponseMenu
-        active={!isMenuHidden}
-        onClick={() => setIsMenuHidden((prev) => !prev)}
-      >
+      <NavbarResponseMenu active={!isMenuHidden} onClick={handleNavbarButton}>
         <AiOutlineMenu style={{ fontSize: 24, color: "#fff" }} />
       </NavbarResponseMenu>
     </NavbarWrapper>
@@ -73,6 +81,8 @@ Navbar.propTypes = {
   setSearchValue: PropTypes.func,
   handleSearchClick: PropTypes.func,
   setCurrentTheme: PropTypes.func,
+  sideMenuHidding: PropTypes.func,
+  sideMenuShowing: PropTypes.func,
 };
 
 export default Navbar;

@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
   ::placeholder {
     color: var(--font-color);
   }
-  .container {
+  .custom-container {
     padding: 0 2.5%;
     padding-top: 45px;
   }
@@ -56,20 +56,21 @@ export const GlobalStyle = createGlobalStyle`
     transition: 0.3s;
   }
 
-  .weather-cards_wrapper {
+  /* .weather-cards_wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fill, 270px);
     grid-column-gap: 35px;
     justify-content: space-around;
-
     margin-top: 30px;
-  }
+  } */
 
   .page-name__title {
     font-size: 38px;
+    display: inline-block;
     background-color: var(--dark-blue);
+    margin-top: 35px;
     color: var(--white);
-    padding: 10px 18px;
+    padding: 6px 18px;
     border-radius: 7px;
   }
 `;

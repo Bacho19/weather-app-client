@@ -9,9 +9,9 @@ const DailyPage = () => {
   const { daily } = useContext(WeatherDataContext);
   const cityName = useContext(CityNameContext);
   return (
-    <div className="container">
-      <span className="page-name__title">{cityName}</span>
-      <div className="weather-cards_wrapper">
+    <>
+      <p className="page-name__title">{cityName}</p>
+      <div className="row justify-content-around">
         {daily &&
           daily.map((item) => {
             return (
@@ -27,7 +27,7 @@ const DailyPage = () => {
             );
           })}
       </div>
-    </div>
+    </>
   );
 };
 

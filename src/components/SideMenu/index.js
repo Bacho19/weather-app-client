@@ -11,9 +11,16 @@ const SideMenu = ({
   setSearchValue,
   handleSearchClick,
   setCurrentTheme,
+  hiddingContent,
+  sideMenuHidding,
 }) => {
+  const handleMenuItem = () => {
+    setIsMenuHidden(true);
+    sideMenuHidding();
+  };
+
   return (
-    <SideMenuWrapper isHidden={isMenuHidden}>
+    <SideMenuWrapper isHidden={isMenuHidden} ref={hiddingContent}>
       <SideMenuContent>
         <Searchbar
           setSearchValue={setSearchValue}
@@ -22,9 +29,7 @@ const SideMenu = ({
         <SideMenuNav>
           <NavLink
             to="/"
-            onClick={() => {
-              setIsMenuHidden(true);
-            }}
+            onClick={handleMenuItem}
             className={({ isActive }) =>
               isActive ? "menu_item_active" : "menu_item"
             }
@@ -33,9 +38,7 @@ const SideMenu = ({
           </NavLink>
           <NavLink
             to="/daily"
-            onClick={() => {
-              setIsMenuHidden(true);
-            }}
+            onClick={handleMenuItem}
             className={({ isActive }) =>
               isActive ? "menu_item_active" : "menu_item"
             }
@@ -44,9 +47,7 @@ const SideMenu = ({
           </NavLink>
           <NavLink
             to="/hourly"
-            onClick={() => {
-              setIsMenuHidden(true);
-            }}
+            onClick={handleMenuItem}
             className={({ isActive }) =>
               isActive ? "menu_item_active" : "menu_item"
             }
@@ -66,6 +67,8 @@ SideMenu.propTypes = {
   setSearchValue: PropTypes.func,
   handleSearchClick: PropTypes.func,
   setCurrentTheme: PropTypes.func,
+  hiddingContent: PropTypes.object,
+  sideMenuHidding: PropTypes.func,
 };
 
 export default SideMenu;

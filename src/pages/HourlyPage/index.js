@@ -9,9 +9,9 @@ const HourlyPage = () => {
   const { hourly } = useContext(WeatherDataContext);
   const cityName = useContext(CityNameContext);
   return (
-    <div className="container">
-      <span className="page-name__title">{cityName}</span>
-      <div className="weather-cards_wrapper">
+    <>
+      <p className="page-name__title">{cityName}</p>
+      <div className="row">
         {hourly &&
           hourly.map((item) => {
             return (
@@ -28,7 +28,7 @@ const HourlyPage = () => {
             );
           })}
       </div>
-    </div>
+    </>
   );
 };
 

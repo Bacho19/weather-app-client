@@ -4,8 +4,9 @@ import CurrentPage from "./pages/CurrentPage";
 import DailyPage from "./pages/DailyPage";
 import HourlyPage from "./pages/HourlyPage";
 import Loader from "./components/Loader";
+import PropTypes from "prop-types";
 
-export const RouterPages = ({ isLoading }) => {
+const RouterPages = ({ isLoading }) => {
   if (isLoading) {
     return <Loader />;
   }
@@ -17,3 +18,9 @@ export const RouterPages = ({ isLoading }) => {
     </Routes>
   );
 };
+
+RouterPages.propTypes = {
+  isLoading: PropTypes.bool,
+};
+
+export default RouterPages;

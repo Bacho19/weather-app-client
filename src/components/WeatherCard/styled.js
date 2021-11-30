@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
 export const CardWrapper = styled.div`
-  width: 270px;
-  height: 370px;
+  width: 321px;
+  height: 490px;
   background-color: var(--dark-blue); //#649fd2
   border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--white);
-  margin-bottom: 70px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+  margin-top: 35px;
 `;
 
 export const CardContent = styled.div`
@@ -30,11 +32,9 @@ export const CardTitle = styled.p`
 export const CardTempInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 8px;
 `;
 
 export const CardVerticalBar = styled.span`
-  margin: 0 10px;
   font-size: 44px;
   font-weight: 200;
   color: rgba(255, 255, 255, 0.5);

@@ -2,16 +2,15 @@ import styled from "styled-components";
 
 export const SideMenuWrapper = styled.div`
   position: fixed;
-  left: ${(props) => (props.isHidden ? "-100%" : "0")};
+  left: -100%;
   height: 100%;
   width: 100%;
   background-color: var(--side-menu-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.4s;
   @media only screen and (min-width: 768px) {
-    left: -100%;
+    left: -100% !important;
   }
 `;
 

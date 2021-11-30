@@ -7,9 +7,13 @@ import PropTypes from "prop-types";
 const ThemeSwitch = ({ setCurrentTheme }) => {
   const theme = useContext(ThemeContext);
   const handleTheme = () => {
-    theme === themes.LIGHT
-      ? setCurrentTheme(themes.DARK)
-      : setCurrentTheme(themes.LIGHT);
+    if (theme === themes.LIGHT) {
+      setCurrentTheme(themes.DARK);
+      localStorage.setItem("theme", JSON.stringify(themes.DARK));
+    } else {
+      setCurrentTheme(themes.LIGHT);
+      localStorage.setItem("theme", JSON.stringify(themes.LIGHT));
+    }
   };
 
   return (
