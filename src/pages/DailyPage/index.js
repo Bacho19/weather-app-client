@@ -1,19 +1,18 @@
 import React, { useContext } from "react";
 import WeatherCard from "../../components/WeatherCard";
 import { CityNameContext } from "../../context/CityName";
-import { WeatherDataContext } from "../../context/WeatherData";
 import { months, shortDays } from "../../monthsDays";
+import PropTypes from "prop-types";
 import {} from "./styled";
 
-const DailyPage = () => {
-  const { daily } = useContext(WeatherDataContext);
+const DailyPage = ({ weatherData }) => {
   const cityName = useContext(CityNameContext);
   return (
     <>
       <p className="page-name__title">{cityName}</p>
       <div className="row justify-content-around">
-        {daily &&
-          daily.map((item) => {
+        {weatherData.daily &&
+          weatherData.daily.map((item) => {
             return (
               <WeatherCard
                 key={item.dt}
@@ -29,6 +28,10 @@ const DailyPage = () => {
       </div>
     </>
   );
+};
+
+DailyPage.propTypes = {
+  weatherData: PropTypes.object,
 };
 
 export default DailyPage;

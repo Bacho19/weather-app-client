@@ -1,19 +1,18 @@
 import React, { useContext } from "react";
 import WeatherCard from "../../components/WeatherCard";
 import { CityNameContext } from "../../context/CityName";
-import { WeatherDataContext } from "../../context/WeatherData";
 import { months, shortDays } from "../../monthsDays";
+import PropTypes from "prop-types";
 import {} from "./styled";
 
-const HourlyPage = () => {
-  const { hourly } = useContext(WeatherDataContext);
+const HourlyPage = ({ weatherData }) => {
   const cityName = useContext(CityNameContext);
   return (
     <>
       <p className="page-name__title">{cityName}</p>
       <div className="row">
-        {hourly &&
-          hourly.map((item) => {
+        {weatherData.hourly &&
+          weatherData.hourly.map((item) => {
             return (
               <WeatherCard
                 key={item.dt}
@@ -30,6 +29,10 @@ const HourlyPage = () => {
       </div>
     </>
   );
+};
+
+HourlyPage.propTypes = {
+  weatherData: PropTypes.object,
 };
 
 export default HourlyPage;

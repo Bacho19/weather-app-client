@@ -1,46 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ThemeProvider } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWeatherData } from "./store/actions/weather";
+import { GlobalStyle } from "./globalStyles";
 import { SearchCityContext } from "./context/SearchCity";
-import { WeatherDataContext } from "./context/WeatherData";
 import { ThemeContext, themes } from "./context/Theme";
 import { CityNameContext } from "./context/CityName";
-import axios from "axios";
 import Navbar from "./components/Navbar";
 import SideMenu from "./components/SideMenu";
 import RouterPages from "./router";
-import { GlobalStyle } from "./globalStyles";
 import { lightTheme, darkTheme } from "./themes";
-import { apiId, baseUrl } from "./api";
 
 const App = () => {
-  const [weatherData, setWeatherData] = useState({});
   const [cityName, setCityName] = useState("Tbilisi");
   const [searchValue, setSearchValue] = useState("");
   const [isMenuHidden, setIsMenuHidden] = useState(true);
   const [currentTheme, setCurrentTheme] = useState(themes.LIGHT);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const {
+    weather: weatherData,
+    loading,
+    error,
+  } = useSelector((state) => state.weather);
 
   let hiddingContent = useRef();
 
   useEffect(() => {
     const savedTheme = JSON.parse(localStorage.getItem("theme"));
-    console.log(savedTheme);
     setCurrentTheme(savedTheme);
-    fetchWeatherData(41.6941, 44.8337);
-  }, []);
-
-  const fetchWeatherData = async (lat, lon) => {
-    try {
-      setIsLoading(true);
-      const { data } = await axios.get(
-        `${baseUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiId}`
-      );
-      setWeatherData(data);
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+    dispatch(fetchWeatherData({ lat: 41.6941, lon: 44.8337 }));
+  }, [dispatch]);
 
   const sideMenuHidding = () => {
     window.scrollTo(0, 0);
@@ -76,7 +66,7 @@ const App = () => {
   };
 
   const handleSearchClick = (lat, lon, cityName, inputElement) => {
-    fetchWeatherData(lat, lon);
+    dispatch(fetchWeatherData({ lat, lon }));
     setCityName(cityName);
     inputElement.current.blur();
   };
@@ -107,13 +97,20 @@ const App = () => {
               hiddingContent={hiddingContent}
               sideMenuHidding={sideMenuHidding}
             />
-            <WeatherDataContext.Provider value={weatherData}>
-              <CityNameContext.Provider value={cityName}>
-                <div className="container">
-                  <RouterPages isLoading={isLoading} />
-                </div>
-              </CityNameContext.Provider>
-            </WeatherDataContext.Provider>
+            <CityNameContext.Provider value={cityName}>
+              <div className="container">
+                {error && (
+                  <div
+                    className="alert alert-danger"
+                    role="alert"
+                    style={{ marginTop: 25 }}
+                  >
+                    {error}
+                  </div>
+                )}
+                <RouterPages weatherData={weatherData} isLoading={loading} />
+              </div>
+            </CityNameContext.Provider>
           </div>
         </SearchCityContext.Provider>
       </ThemeContext.Provider>
