@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchWeatherData } from "../actions/weather";
+import { fetchWeatherData } from "../weather/action";
 
-const weatherInitialState = {
+const initialState = {
   loading: false,
   weather: {},
   error: "",
@@ -9,7 +9,7 @@ const weatherInitialState = {
 
 const weatherSlice = createSlice({
   name: "weather",
-  initialState: weatherInitialState,
+  initialState,
   extraReducers: {
     [fetchWeatherData.pending.type]: (state) => {
       state.loading = true;

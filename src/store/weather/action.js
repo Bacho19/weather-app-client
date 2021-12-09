@@ -4,14 +4,14 @@ import { apiId, baseUrl } from "../../api";
 
 export const fetchWeatherData = createAsyncThunk(
   "weather/fetchData",
-  async ({ lat, lon }, thunkAPI) => {
+  async ({ lat, lon }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `${baseUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiId}`
       );
       return response.data;
     } catch (e) {
-      return thunkAPI.rejectWithValue(e.message);
+      return rejectWithValue(e.message);
     }
   }
 );

@@ -11,11 +11,12 @@ export const NavbarWrapper = styled.div`
 `;
 
 export const NavbarContent = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  padding: 0 2.5%;
+  margin: 0 2.5%;
 
   @media only screen and (max-width: 768px) {
     display: none;
@@ -25,7 +26,17 @@ export const NavbarContent = styled.div`
 export const NavbarMenu = styled.nav`
   display: flex;
   justify-content: space-between;
-  width: 225px;
+  width: ${(props) => props.width};
+`;
+
+export const NavbarSearchbarWrapper = styled.div`
+  position: absolute;
+  left: 0;
+`;
+
+export const NavbarThemeWrapper = styled.div`
+  position: absolute;
+  right: 0;
 `;
 
 export const NavbarResponseMenu = styled.div`

@@ -7,6 +7,9 @@ export const SearchbarForm = styled.form`
   height: 28px;
   width: 270px;
   border-radius: 15px;
+  @media (max-width: 935px) {
+    width: 200px;
+  }
 `;
 
 export const SearchbarInput = styled.input`

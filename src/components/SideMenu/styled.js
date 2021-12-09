@@ -23,7 +23,7 @@ export const SideMenuContent = styled.div`
 `;
 
 export const SideMenuNav = styled.div`
-  height: 140px;
+  height: ${(props) => props.height};
   display: flex;
   align-items: center;
   flex-direction: column;

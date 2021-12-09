@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ThemeProvider } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWeatherData } from "./store/actions/weather";
+import { fetchWeatherData } from "./store/weather/action";
 import { GlobalStyle } from "./globalStyles";
 import { SearchCityContext } from "./context/SearchCity";
 import { ThemeContext, themes } from "./context/Theme";
@@ -10,6 +10,10 @@ import Navbar from "./components/Navbar";
 import SideMenu from "./components/SideMenu";
 import RouterPages from "./router";
 import { lightTheme, darkTheme } from "./themes";
+
+// ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember - cookie (uuid  - tocken)), (auth - localStorage).
+// nav-ში ღილაკების გაცენტრვა. +
+// პაროლი უნდა იყოს დაშიფრული.
 
 const App = () => {
   const [cityName, setCityName] = useState("Tbilisi");
