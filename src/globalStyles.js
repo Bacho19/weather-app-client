@@ -7,8 +7,10 @@ export const GlobalStyle = createGlobalStyle`
     --dark-blue: ${(props) => props.theme.darkBlue};
     --white: ${(props) => props.theme.white};
     --side-menu-color: ${(props) => props.theme.sideMenuColor};
+    --button-color: ${(props) => props.theme.buttonColor};
+    --disabled-button-color: ${(props) => props.theme.disabledButtonColor};
   }
-  
+   
   * {
     padding: 0;
     margin: 0;
