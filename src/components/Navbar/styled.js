@@ -39,6 +39,11 @@ export const NavbarThemeWrapper = styled.div`
   right: 0;
 `;
 
+export const LogoutButtonWrapper = styled.div`
+  position: absolute;
+  right: 70px;
+`;
+
 export const NavbarResponseMenu = styled.div`
   width: 42px;
   height: 42px;

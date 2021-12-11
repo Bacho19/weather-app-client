@@ -4,7 +4,9 @@ import { NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Button from "../Button";
+import { logoutUser } from "../../store/auth/reducer";
 import {
   NavbarContent,
   NavbarWrapper,
@@ -12,6 +14,7 @@ import {
   NavbarResponseMenu,
   NavbarSearchbarWrapper,
   NavbarThemeWrapper,
+  LogoutButtonWrapper,
 } from "./styled";
 
 const Navbar = ({
@@ -25,6 +28,8 @@ const Navbar = ({
 }) => {
   const { isAuth } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch();
+
   const handleNavbarButton = () => {
     setIsMenuHidden((prev) => !prev);
     if (isMenuHidden) {
@@ -32,6 +37,10 @@ const Navbar = ({
     } else {
       sideMenuHidding();
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
   };
 
   return (
@@ -96,6 +105,13 @@ const Navbar = ({
               Register
             </NavLink>
           </NavbarMenu>
+        )}
+        {isAuth && (
+          <LogoutButtonWrapper>
+            <Button color="#1859ae" onClick={handleLogout}>
+              Logout
+            </Button>
+          </LogoutButtonWrapper>
         )}
         <NavbarThemeWrapper>
           <ThemeSwitch setCurrentTheme={setCurrentTheme} />

@@ -4,7 +4,9 @@ import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Button from "../Button";
+import { logoutUser } from "../../store/auth/reducer";
 
 const SideMenu = ({
   isMenuHidden,
@@ -17,9 +19,16 @@ const SideMenu = ({
 }) => {
   const { isAuth } = useSelector((state) => state.auth);
 
+  const dispatch = useDispatch();
+
   const handleMenuItem = () => {
     setIsMenuHidden(true);
     sideMenuHidding();
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    handleMenuItem();
   };
 
   return (
@@ -82,6 +91,11 @@ const SideMenu = ({
               Register
             </NavLink>
           </SideMenuNav>
+        )}
+        {isAuth && (
+          <Button color="#1859ae" onClick={handleLogout}>
+            Logout
+          </Button>
         )}
         <ThemeSwitch setCurrentTheme={setCurrentTheme} />
       </SideMenuContent>

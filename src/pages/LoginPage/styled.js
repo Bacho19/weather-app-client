@@ -23,3 +23,7 @@ export const RememberLabelText = styled.span`
   font-weight: 700;
   margin-left: 5px;
 `;
+
+export const LoginErrorMessage = styled.div`
+  margin: 30px 0 -104px;
+`;

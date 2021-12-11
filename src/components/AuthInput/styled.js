@@ -14,4 +14,10 @@ export const Input = styled.input`
   &:focus {
     box-shadow: 0 0 7px var(--dark-blue);
   }
+  @media only screen and (max-width: 472px) {
+    width: 320px;
+  }
+  @media only screen and (max-width: 372px) {
+    width: 270px;
+  }
 `;

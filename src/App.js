@@ -11,8 +11,8 @@ import SideMenu from "./components/SideMenu";
 import RouterPages from "./router";
 import { lightTheme, darkTheme } from "./themes";
 
-// ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember - cookie (uuid  - tocken)), (auth - localStorage).
-// nav-ში ღილაკების გაცენტრვა. +
+// ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember) (auth - localStorage).
+// nav-ში ღილაკების გაცენტრვა.
 // პაროლი უნდა იყოს დაშიფრული.
 
 const App = () => {
@@ -20,7 +20,6 @@ const App = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isMenuHidden, setIsMenuHidden] = useState(true);
   const [currentTheme, setCurrentTheme] = useState(themes.LIGHT);
-  const dispatch = useDispatch();
 
   const {
     weather: weatherData,
@@ -28,6 +27,7 @@ const App = () => {
     error,
   } = useSelector((state) => state.weather);
 
+  const dispatch = useDispatch();
   let hiddingContent = useRef();
 
   useEffect(() => {

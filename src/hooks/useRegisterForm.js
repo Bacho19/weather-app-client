@@ -85,7 +85,10 @@ export const useRegisterForm = () => {
   };
 
   const handlePassword2 = (e) => {
-    if (e.target.value !== password) {
+    if (!e.target.value) {
+      setIsPassword2Valid(false);
+      setPassword2Error("Repeat your password");
+    } else if (e.target.value !== password) {
       setIsPassword2Valid(false);
       setPassword2Error("Passwords do not match");
     } else {
@@ -106,19 +109,31 @@ export const useRegisterForm = () => {
     setIsPassword2Valid(false);
   };
 
-  return {
+  const values = {
     username,
     email,
     password,
     password2,
+  };
+
+  const handleValues = {
     handleUsername,
     handleEmail,
     handlePassword,
     handlePassword2,
+  };
+
+  const errors = {
     usernameError,
     emailError,
     passwordError,
     password2Error,
+  };
+
+  return {
+    values,
+    handleValues,
+    errors,
     isFormValid,
     clearValues,
   };
