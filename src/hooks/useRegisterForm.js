@@ -77,9 +77,14 @@ export const useRegisterForm = () => {
     } else if (e.target.value.length < 4) {
       setIsPasswordValid(false);
       setPasswordError("Password must be at least 4 characters");
+    } else if (e.target.value !== password2) {
+      setPasswordError("");
+      setIsPasswordValid(false);
+      setPassword2Error("Passwords do not match");
     } else {
       setIsPasswordValid(true);
       setPasswordError("");
+      setPassword2Error("");
     }
     setPassword(e.target.value);
   };
@@ -93,6 +98,7 @@ export const useRegisterForm = () => {
       setPassword2Error("Passwords do not match");
     } else {
       setIsPassword2Valid(true);
+      setIsPasswordValid(true);
       setPassword2Error("");
     }
     setPassword2(e.target.value);

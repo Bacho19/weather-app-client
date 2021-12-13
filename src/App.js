@@ -10,6 +10,9 @@ import Navbar from "./components/Navbar";
 import SideMenu from "./components/SideMenu";
 import RouterPages from "./router";
 import { lightTheme, darkTheme } from "./themes";
+import { sideMenuHidding, sideMenuShowing } from "./utils/sideMenu";
+import { getCookie } from "./utils/cookies";
+import { checkUser } from "./store/auth/reducer";
 
 // ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember) (auth - localStorage).
 // nav-ში ღილაკების გაცენტრვა.
@@ -34,40 +37,16 @@ const App = () => {
     const savedTheme = JSON.parse(localStorage.getItem("theme"));
     setCurrentTheme(savedTheme);
     dispatch(fetchWeatherData({ lat: 41.6941, lon: 44.8337 }));
+
+    const token = getCookie("authToken");
+    if (token) {
+      const username = token.split("?")[0];
+      const user = JSON.parse(localStorage.getItem("users")).find(
+        (x) => x.username === username
+      );
+      dispatch(checkUser({ email: user.email, username: user.username }));
+    }
   }, [dispatch]);
-
-  const sideMenuHidding = () => {
-    window.scrollTo(0, 0);
-    let hiddingCount = 0;
-    const hiddingSpeed = 9;
-    const interval = setInterval(() => {
-      if (hiddingCount >= window.innerWidth) {
-        clearInterval(interval);
-        hiddingContent.current.style.display = "none";
-      }
-      hiddingCount += hiddingSpeed;
-      hiddingContent.current.style.left = `-${hiddingCount}px`;
-    }, 1);
-  };
-
-  const sideMenuShowing = () => {
-    window.scrollTo(0, 0);
-    hiddingContent.current.style.display = "flex";
-    let showingCount = window.innerWidth;
-    const showingSpeed = 9;
-    const interval = setInterval(() => {
-      if (showingCount <= 0) {
-        clearInterval(interval);
-      }
-      if (showingCount < showingSpeed) {
-        showingCount -= showingCount;
-        hiddingContent.current.style.left = `-${showingCount}px`;
-        clearInterval(interval);
-      }
-      showingCount -= showingSpeed;
-      hiddingContent.current.style.left = `-${showingCount}px`;
-    }, 1);
-  };
 
   const handleSearchClick = (lat, lon, cityName, inputElement) => {
     dispatch(fetchWeatherData({ lat, lon }));
@@ -88,8 +67,8 @@ const App = () => {
             setSearchValue={setSearchValue}
             handleSearchClick={handleSearchClick}
             setCurrentTheme={setCurrentTheme}
-            sideMenuHidding={sideMenuHidding}
-            sideMenuShowing={sideMenuShowing}
+            sideMenuHidding={() => sideMenuHidding(hiddingContent)}
+            sideMenuShowing={() => sideMenuShowing(hiddingContent)}
           />
           <div className="app-wrapper">
             <SideMenu
@@ -99,7 +78,7 @@ const App = () => {
               handleSearchClick={handleSearchClick}
               setCurrentTheme={setCurrentTheme}
               hiddingContent={hiddingContent}
-              sideMenuHidding={sideMenuHidding}
+              sideMenuHidding={() => sideMenuHidding(hiddingContent)}
             />
             <CityNameContext.Provider value={cityName}>
               <div className="container">

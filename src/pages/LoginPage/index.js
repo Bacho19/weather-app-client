@@ -16,13 +16,15 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [checkedRemember, setCheckedRemember] = useState(false);
+
   const { loading, loginError } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
-  const handleLogin = (email, password) => {
+  const handleLogin = () => {
     if (email.trim() && password.trim()) {
-      dispatch(loginUser({ email, password }));
+      dispatch(loginUser({ email, password, checkedRemember }));
     }
   };
 
@@ -52,10 +54,14 @@ const LoginPage = () => {
         placeholder="Password"
       />
       <RememberLabel>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          checked={checkedRemember}
+          onChange={() => setCheckedRemember((prev) => !prev)}
+        />
         <RememberLabelText>Remember me</RememberLabelText>
       </RememberLabel>
-      <Button onClick={() => handleLogin(email, password)}>Login</Button>
+      <Button onClick={handleLogin}>Login</Button>
     </AuthWrapper>
   );
 };

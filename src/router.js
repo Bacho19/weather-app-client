@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import CurrentPage from "./pages/CurrentPage";
 import DailyPage from "./pages/DailyPage";
 import HourlyPage from "./pages/HourlyPage";
@@ -29,13 +29,11 @@ const RouterPages = ({ isLoading, weatherData }) => {
             path="/hourly"
             element={<HourlyPage weatherData={weatherData} />}
           />
-          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
         <Routes>
+          <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       )}
     </>

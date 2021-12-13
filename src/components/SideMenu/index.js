@@ -1,12 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../Button";
-import { logoutUser } from "../../store/auth/reducer";
+import { logoutUser } from "../../store/auth/action";
 
 const SideMenu = ({
   isMenuHidden,
@@ -20,6 +20,7 @@ const SideMenu = ({
   const { isAuth } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleMenuItem = () => {
     setIsMenuHidden(true);
@@ -29,6 +30,7 @@ const SideMenu = ({
   const handleLogout = () => {
     dispatch(logoutUser());
     handleMenuItem();
+    navigate("/");
   };
 
   return (
@@ -73,7 +75,7 @@ const SideMenu = ({
         ) : (
           <SideMenuNav height="85px">
             <NavLink
-              to="/login"
+              to="/"
               onClick={handleMenuItem}
               className={({ isActive }) =>
                 isActive ? "menu_item_active" : "menu_item"

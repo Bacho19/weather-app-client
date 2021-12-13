@@ -1,12 +1,12 @@
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../Button";
-import { logoutUser } from "../../store/auth/reducer";
+import { logoutUser } from "../../store/auth/action";
 import {
   NavbarContent,
   NavbarWrapper,
@@ -29,6 +29,7 @@ const Navbar = ({
   const { isAuth } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleNavbarButton = () => {
     setIsMenuHidden((prev) => !prev);
@@ -41,6 +42,7 @@ const Navbar = ({
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    navigate("/");
   };
 
   return (
@@ -87,7 +89,7 @@ const Navbar = ({
         ) : (
           <NavbarMenu width="155px">
             <NavLink
-              to="/login"
+              to="/"
               style={{ textDecoration: "none" }}
               className={({ isActive }) =>
                 isActive ? "menu_item_active" : "menu_item"
