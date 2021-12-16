@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form, Field } from "formik";
 import AuthInput from "../../components/AuthInput/index.js";
 import Button from "../../components/Button/index.js";
 import Loader from "../../components/Loader/index.js";
@@ -13,16 +14,11 @@ import {
 } from "./styled.js";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [checkedRemember, setCheckedRemember] = useState(false);
-
   const { loading, loginError } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
+  const handleLogin = ({ email, password, checkedRemember }) => {
     if (email.trim() && password.trim()) {
       dispatch(loginUser({ email, password, checkedRemember }));
     }
@@ -41,27 +37,38 @@ const LoginPage = () => {
         </LoginErrorMessage>
       )}
       <AuthTitle>Login</AuthTitle>
-      <AuthInput
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <AuthInput
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <RememberLabel>
-        <input
-          type="checkbox"
-          checked={checkedRemember}
-          onChange={() => setCheckedRemember((prev) => !prev)}
-        />
-        <RememberLabelText>Remember me</RememberLabelText>
-      </RememberLabel>
-      <Button onClick={handleLogin}>Login</Button>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+          checkedRemember: false,
+        }}
+        onSubmit={handleLogin}
+      >
+        {() => (
+          <Form>
+            <AuthWrapper>
+              <Field
+                name="email"
+                type="email"
+                as={AuthInput}
+                placeholder="Email"
+              />
+              <Field
+                name="password"
+                type="password"
+                as={AuthInput}
+                placeholder="Password"
+              />
+              <RememberLabel>
+                <Field name="checkedRemember" type="checkbox" />
+                <RememberLabelText>Remember me</RememberLabelText>
+              </RememberLabel>
+              <Button type="submit">Login</Button>
+            </AuthWrapper>
+          </Form>
+        )}
+      </Formik>
     </AuthWrapper>
   );
 };

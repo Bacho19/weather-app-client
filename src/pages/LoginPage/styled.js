@@ -14,6 +14,7 @@ export const AuthWrapper = styled.div`
 `;
 
 export const RememberLabel = styled.label`
+  display: block;
   margin: 5px 0 10px;
   cursor: pointer;
 `;

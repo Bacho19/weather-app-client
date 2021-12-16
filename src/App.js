@@ -14,6 +14,8 @@ import { sideMenuHidding, sideMenuShowing } from "./utils/sideMenu";
 import { getCookie } from "./utils/cookies";
 import { checkUser } from "./store/auth/reducer";
 
+// formik
+
 // ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember) (auth - localStorage).
 // nav-ში ღილაკების გაცენტრვა.
 // პაროლი უნდა იყოს დაშიფრული.

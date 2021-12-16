@@ -7,9 +7,15 @@ const Button = ({
   disabled,
   children,
   color = "var(--dark-blue)",
+  type,
 }) => {
   return (
-    <CustomButton onClick={onClick} disabled={disabled} color={color}>
+    <CustomButton
+      onClick={onClick}
+      disabled={disabled}
+      color={color}
+      type={type}
+    >
       {children}
     </CustomButton>
   );

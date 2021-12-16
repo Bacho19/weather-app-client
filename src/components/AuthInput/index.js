@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "./styled";
 
-const AuthInput = ({ ...props }) => {
+const AuthInput = (props) => {
   return (
     <div>
       <Input {...props} />
