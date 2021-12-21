@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { NavLink, useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import Button from "../Button";
-import { logoutUser } from "../../store/auth/action";
+import { AuthContext } from "../../context/Auth";
 import {
   NavbarContent,
   NavbarWrapper,
@@ -26,9 +25,8 @@ const Navbar = ({
   sideMenuHidding,
   sideMenuShowing,
 }) => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth, logout } = useContext(AuthContext);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleNavbarButton = () => {
@@ -41,7 +39,7 @@ const Navbar = ({
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    logout();
     navigate("/");
   };
 

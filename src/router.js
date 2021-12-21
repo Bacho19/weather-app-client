@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import CurrentPage from "./pages/CurrentPage";
 import DailyPage from "./pages/DailyPage";
@@ -7,10 +7,10 @@ import Loader from "./components/Loader";
 import PropTypes from "prop-types";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import { useSelector } from "react-redux";
+import { AuthContext } from "./context/Auth";
 
 const RouterPages = ({ isLoading, weatherData }) => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth } = useContext(AuthContext);
 
   if (isLoading) {
     return <Loader />;

@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/Auth";
 import Searchbar from "../Searchbar";
 import ThemeSwitch from "../ThemeSwitch";
-import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import Button from "../Button";
-import { logoutUser } from "../../store/auth/action";
+import { SideMenuWrapper, SideMenuContent, SideMenuNav } from "./styled";
 
 const SideMenu = ({
   isMenuHidden,
@@ -17,9 +16,8 @@ const SideMenu = ({
   hiddingContent,
   sideMenuHidding,
 }) => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth, logout } = useContext(AuthContext);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleMenuItem = () => {
@@ -28,7 +26,7 @@ const SideMenu = ({
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    logout();
     handleMenuItem();
     navigate("/");
   };

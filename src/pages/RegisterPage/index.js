@@ -2,29 +2,36 @@ import React from "react";
 import md5 from "md5";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../../graphql/mutations/auth";
 import AuthInput from "../../components/AuthInput";
 import Button from "../../components/Button";
 import { AuthTitle, AuthWrapper } from "../LoginPage/styled";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../store/auth/action";
 import ErrorMessage from "../../components/ErrorMessage";
-import Loader from "../../components/Loader";
+// import Loader from "../../components/Loader";
 
 const RegisterPage = () => {
-  const { loading } = useSelector((state) => state.auth);
+  const [createUser] = useMutation(CREATE_USER);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleRegister = (values) => {
-    const hashedPassword = md5(values.password);
-    const newUser = {
-      username: values.username,
-      email: values.email,
-      password: hashedPassword,
-    };
-    dispatch(registerUser(newUser));
-    navigate("/");
+  const handleRegister = async (values) => {
+    try {
+      const hashedPassword = md5(values.password);
+      const newUser = {
+        username: values.username,
+        email: values.email,
+        password: hashedPassword,
+      };
+      await createUser({
+        variables: {
+          input: newUser,
+        },
+      });
+      navigate("/");
+    } catch (e) {
+      console.error(e.message);
+    }
   };
 
   const validate = (values) => {
@@ -59,9 +66,9 @@ const RegisterPage = () => {
     return errors;
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <AuthWrapper>

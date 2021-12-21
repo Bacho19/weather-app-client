@@ -6,19 +6,16 @@ import { GlobalStyle } from "./globalStyles";
 import { SearchCityContext } from "./context/SearchCity";
 import { ThemeContext, themes } from "./context/Theme";
 import { CityNameContext } from "./context/CityName";
+import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
 import SideMenu from "./components/SideMenu";
 import RouterPages from "./router";
 import { lightTheme, darkTheme } from "./themes";
 import { sideMenuHidding, sideMenuShowing } from "./utils/sideMenu";
 import { getCookie } from "./utils/cookies";
-import { checkUser } from "./store/auth/reducer";
+import { useAuth } from "./hooks/useAuth";
 
-// formik
-
-// ავტორიზაციის-რეგისტრაციის გვერდი (username, email, password, remember) (auth - localStorage).
-// nav-ში ღილაკების გაცენტრვა.
-// პაროლი უნდა იყოს დაშიფრული.
+// graphql (apollo)
 
 const App = () => {
   const [cityName, setCityName] = useState("Tbilisi");
@@ -32,6 +29,8 @@ const App = () => {
     error,
   } = useSelector((state) => state.weather);
 
+  const { isAuth, setIsAuth, login, logout, loginError, clearErrors } =
+    useAuth();
   const dispatch = useDispatch();
   let hiddingContent = useRef();
 
@@ -41,14 +40,15 @@ const App = () => {
     dispatch(fetchWeatherData({ lat: 41.6941, lon: 44.8337 }));
 
     const token = getCookie("authToken");
-    if (token) {
-      const username = token.split("?")[0];
-      const user = JSON.parse(localStorage.getItem("users")).find(
-        (x) => x.username === username
-      );
-      dispatch(checkUser({ email: user.email, username: user.username }));
-    }
-  }, [dispatch]);
+    setIsAuth(!!token);
+    // if (token) {
+    //   const username = token.split("?")[0];
+    //   const user = JSON.parse(localStorage.getItem("users")).find(
+    //     (x) => x.username === username
+    //   );
+    //   dispatch(checkUser({ email: user.email, username: user.username }));
+    // }
+  }, [dispatch, setIsAuth]);
 
   const handleSearchClick = (lat, lon, cityName, inputElement) => {
     dispatch(fetchWeatherData({ lat, lon }));
@@ -62,42 +62,46 @@ const App = () => {
     >
       <GlobalStyle isMenuHidden={isMenuHidden} />
       <ThemeContext.Provider value={currentTheme}>
-        <SearchCityContext.Provider value={searchValue}>
-          <Navbar
-            isMenuHidden={isMenuHidden}
-            setIsMenuHidden={setIsMenuHidden}
-            setSearchValue={setSearchValue}
-            handleSearchClick={handleSearchClick}
-            setCurrentTheme={setCurrentTheme}
-            sideMenuHidding={() => sideMenuHidding(hiddingContent)}
-            sideMenuShowing={() => sideMenuShowing(hiddingContent)}
-          />
-          <div className="app-wrapper">
-            <SideMenu
+        <AuthContext.Provider
+          value={{ isAuth, login, logout, loginError, clearErrors }}
+        >
+          <SearchCityContext.Provider value={searchValue}>
+            <Navbar
               isMenuHidden={isMenuHidden}
               setIsMenuHidden={setIsMenuHidden}
               setSearchValue={setSearchValue}
               handleSearchClick={handleSearchClick}
               setCurrentTheme={setCurrentTheme}
-              hiddingContent={hiddingContent}
               sideMenuHidding={() => sideMenuHidding(hiddingContent)}
+              sideMenuShowing={() => sideMenuShowing(hiddingContent)}
             />
-            <CityNameContext.Provider value={cityName}>
-              <div className="container">
-                {error && (
-                  <div
-                    className="alert alert-danger"
-                    role="alert"
-                    style={{ marginTop: 25 }}
-                  >
-                    {error}
-                  </div>
-                )}
-                <RouterPages weatherData={weatherData} isLoading={loading} />
-              </div>
-            </CityNameContext.Provider>
-          </div>
-        </SearchCityContext.Provider>
+            <div className="app-wrapper">
+              <SideMenu
+                isMenuHidden={isMenuHidden}
+                setIsMenuHidden={setIsMenuHidden}
+                setSearchValue={setSearchValue}
+                handleSearchClick={handleSearchClick}
+                setCurrentTheme={setCurrentTheme}
+                hiddingContent={hiddingContent}
+                sideMenuHidding={() => sideMenuHidding(hiddingContent)}
+              />
+              <CityNameContext.Provider value={cityName}>
+                <div className="container">
+                  {error && (
+                    <div
+                      className="alert alert-danger"
+                      role="alert"
+                      style={{ marginTop: 25 }}
+                    >
+                      {error}
+                    </div>
+                  )}
+                  <RouterPages weatherData={weatherData} isLoading={loading} />
+                </div>
+              </CityNameContext.Provider>
+            </div>
+          </SearchCityContext.Provider>
+        </AuthContext.Provider>
       </ThemeContext.Provider>
     </ThemeProvider>
   );

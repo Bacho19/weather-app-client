@@ -1,10 +1,9 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useContext, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import AuthInput from "../../components/AuthInput/index.js";
 import Button from "../../components/Button/index.js";
-import Loader from "../../components/Loader/index.js";
-import { loginUser } from "../../store/auth/action.js";
+// import Loader from "../../components/Loader/index.js";
+import { AuthContext } from "../../context/Auth.js";
 import {
   AuthTitle,
   AuthWrapper,
@@ -14,19 +13,21 @@ import {
 } from "./styled.js";
 
 const LoginPage = () => {
-  const { loading, loginError } = useSelector((state) => state.auth);
+  const { login, loginError, clearErrors } = useContext(AuthContext);
 
-  const dispatch = useDispatch();
-
-  const handleLogin = ({ email, password, checkedRemember }) => {
-    if (email.trim() && password.trim()) {
-      dispatch(loginUser({ email, password, checkedRemember }));
-    }
+  const handleLogin = async (values) => {
+    login(values);
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    return () => {
+      clearErrors();
+    };
+  }, [clearErrors]);
+
+  // if (loading) {
+  //   return <Loader />;
+  // }
   return (
     <AuthWrapper>
       {loginError && (
