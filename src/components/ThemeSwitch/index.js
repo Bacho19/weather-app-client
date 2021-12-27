@@ -1,19 +1,27 @@
-import React, { useContext } from "react";
-import { ThemeContext, themes } from "../../context/Theme";
-import { ThemeSwitchWrapper } from "./styled";
+import React from "react";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { themes } from "../../context/Theme";
+import { changeTheme } from "../../store/theme/reducer";
+import { ThemeSwitchWrapper } from "./styled";
 
-const ThemeSwitch = ({ setCurrentTheme }) => {
-  const theme = useContext(ThemeContext);
+const ThemeSwitch = () => {
+  // const theme = useContext(ThemeContext);
+  // const handleTheme = () => {
+  //   if (theme === themes.LIGHT) {
+  //     setCurrentTheme(themes.DARK);
+  //     localStorage.setItem("theme", JSON.stringify(themes.DARK));
+  //   } else {
+  //     setCurrentTheme(themes.LIGHT);
+  //     localStorage.setItem("theme", JSON.stringify(themes.LIGHT));
+  //   }
+  // };
+
+  const { theme } = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
   const handleTheme = () => {
-    if (theme === themes.LIGHT) {
-      setCurrentTheme(themes.DARK);
-      localStorage.setItem("theme", JSON.stringify(themes.DARK));
-    } else {
-      setCurrentTheme(themes.LIGHT);
-      localStorage.setItem("theme", JSON.stringify(themes.LIGHT));
-    }
+    dispatch(changeTheme());
   };
 
   return (

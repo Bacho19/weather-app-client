@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchWeatherData } from "./store/weather/action";
 import { GlobalStyle } from "./globalStyles";
 import { SearchCityContext } from "./context/SearchCity";
-import { ThemeContext, themes } from "./context/Theme";
+import { themes } from "./context/Theme";
 import { CityNameContext } from "./context/CityName";
 import { AuthContext } from "./context/Auth";
 import Navbar from "./components/Navbar";
@@ -15,13 +15,19 @@ import { sideMenuHidding, sideMenuShowing } from "./utils/sideMenu";
 import { getCookie } from "./utils/cookies";
 import { useAuth } from "./hooks/useAuth";
 
-// graphql (apollo)
+/*
+git push (server, client) +
+redux-persist (theme) +
+monorepo lerna +
+apollo server .env (port, url) +
+*/
 
 const App = () => {
   const [cityName, setCityName] = useState("Tbilisi");
   const [searchValue, setSearchValue] = useState("");
   const [isMenuHidden, setIsMenuHidden] = useState(true);
-  const [currentTheme, setCurrentTheme] = useState(themes.LIGHT);
+
+  const { theme } = useSelector((state) => state.theme);
 
   const {
     weather: weatherData,
@@ -29,25 +35,23 @@ const App = () => {
     error,
   } = useSelector((state) => state.weather);
 
-  const { isAuth, setIsAuth, login, logout, loginError, clearErrors } =
-    useAuth();
+  const {
+    isAuth,
+    setIsAuth,
+    login,
+    loginLoading,
+    logout,
+    loginError,
+    clearErrors,
+  } = useAuth();
   const dispatch = useDispatch();
   let hiddingContent = useRef();
 
   useEffect(() => {
-    const savedTheme = JSON.parse(localStorage.getItem("theme"));
-    setCurrentTheme(savedTheme);
     dispatch(fetchWeatherData({ lat: 41.6941, lon: 44.8337 }));
 
     const token = getCookie("authToken");
     setIsAuth(!!token);
-    // if (token) {
-    //   const username = token.split("?")[0];
-    //   const user = JSON.parse(localStorage.getItem("users")).find(
-    //     (x) => x.username === username
-    //   );
-    //   dispatch(checkUser({ email: user.email, username: user.username }));
-    // }
   }, [dispatch, setIsAuth]);
 
   const handleSearchClick = (lat, lon, cityName, inputElement) => {
@@ -57,52 +61,53 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider
-      theme={currentTheme === themes.LIGHT ? lightTheme : darkTheme}
-    >
+    <ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
       <GlobalStyle isMenuHidden={isMenuHidden} />
-      <ThemeContext.Provider value={currentTheme}>
-        <AuthContext.Provider
-          value={{ isAuth, login, logout, loginError, clearErrors }}
-        >
-          <SearchCityContext.Provider value={searchValue}>
-            <Navbar
+      <AuthContext.Provider
+        value={{
+          isAuth,
+          login,
+          logout,
+          loginLoading,
+          loginError,
+          clearErrors,
+        }}
+      >
+        <SearchCityContext.Provider value={searchValue}>
+          <Navbar
+            isMenuHidden={isMenuHidden}
+            setIsMenuHidden={setIsMenuHidden}
+            setSearchValue={setSearchValue}
+            handleSearchClick={handleSearchClick}
+            sideMenuHidding={() => sideMenuHidding(hiddingContent)}
+            sideMenuShowing={() => sideMenuShowing(hiddingContent)}
+          />
+          <div className="app-wrapper">
+            <SideMenu
               isMenuHidden={isMenuHidden}
               setIsMenuHidden={setIsMenuHidden}
               setSearchValue={setSearchValue}
               handleSearchClick={handleSearchClick}
-              setCurrentTheme={setCurrentTheme}
+              hiddingContent={hiddingContent}
               sideMenuHidding={() => sideMenuHidding(hiddingContent)}
-              sideMenuShowing={() => sideMenuShowing(hiddingContent)}
             />
-            <div className="app-wrapper">
-              <SideMenu
-                isMenuHidden={isMenuHidden}
-                setIsMenuHidden={setIsMenuHidden}
-                setSearchValue={setSearchValue}
-                handleSearchClick={handleSearchClick}
-                setCurrentTheme={setCurrentTheme}
-                hiddingContent={hiddingContent}
-                sideMenuHidding={() => sideMenuHidding(hiddingContent)}
-              />
-              <CityNameContext.Provider value={cityName}>
-                <div className="container">
-                  {error && (
-                    <div
-                      className="alert alert-danger"
-                      role="alert"
-                      style={{ marginTop: 25 }}
-                    >
-                      {error}
-                    </div>
-                  )}
-                  <RouterPages weatherData={weatherData} isLoading={loading} />
-                </div>
-              </CityNameContext.Provider>
-            </div>
-          </SearchCityContext.Provider>
-        </AuthContext.Provider>
-      </ThemeContext.Provider>
+            <CityNameContext.Provider value={cityName}>
+              <div className="container">
+                {error && (
+                  <div
+                    className="alert alert-danger"
+                    role="alert"
+                    style={{ marginTop: 25 }}
+                  >
+                    {error}
+                  </div>
+                )}
+                <RouterPages weatherData={weatherData} isLoading={loading} />
+              </div>
+            </CityNameContext.Provider>
+          </div>
+        </SearchCityContext.Provider>
+      </AuthContext.Provider>
     </ThemeProvider>
   );
 };

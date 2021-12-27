@@ -4,22 +4,25 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { store } from "./store";
+import { store, persistor } from "./store";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  uri: process.env.REACT_APP_SERVER_URI,
   cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ApolloProvider>
+      <PersistGate persistor={persistor}>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ApolloProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

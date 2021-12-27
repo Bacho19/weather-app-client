@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { SearchCityContext } from "../../context/SearchCity";
 import { GoSearch } from "react-icons/go";
 import { SearchbarForm, SearchbarInput } from "./styled";
-import { apiId } from "../../api";
 
 const Searchbar = ({ setSearchValue, handleSearchClick }) => {
   const searchCityValue = useContext(SearchCityContext);
@@ -16,7 +15,7 @@ const Searchbar = ({ setSearchValue, handleSearchClick }) => {
     try {
       if (searchCityValue) {
         const { data: cityCoordinates } = await axios(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${searchCityValue}&limit=1&appid=${apiId}`
+          `http://api.openweathermap.org/geo/1.0/direct?q=${searchCityValue}&limit=1&appid=${process.env.REACT_APP_WEATHER_API_ID}`
         );
         handleSearchClick(
           cityCoordinates[0].lat,

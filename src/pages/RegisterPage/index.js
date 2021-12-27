@@ -8,10 +8,10 @@ import AuthInput from "../../components/AuthInput";
 import Button from "../../components/Button";
 import { AuthTitle, AuthWrapper } from "../LoginPage/styled";
 import ErrorMessage from "../../components/ErrorMessage";
-// import Loader from "../../components/Loader";
+import Loader from "../../components/Loader";
 
 const RegisterPage = () => {
-  const [createUser] = useMutation(CREATE_USER);
+  const [createUser, { loading }] = useMutation(CREATE_USER);
 
   const navigate = useNavigate();
 
@@ -66,9 +66,9 @@ const RegisterPage = () => {
     return errors;
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <AuthWrapper>

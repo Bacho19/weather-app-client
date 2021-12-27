@@ -8,7 +8,7 @@ export const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loginError, setLoginError] = useState("");
 
-  const [loginUser] = useMutation(LOGIN_USER);
+  const [loginUser, { loading }] = useMutation(LOGIN_USER);
 
   const login = async ({ email, password, checkedRemember }) => {
     try {
@@ -53,6 +53,7 @@ export const useAuth = () => {
     isAuth,
     setIsAuth,
     login,
+    loginLoading: loading,
     logout,
     loginError,
     clearErrors,

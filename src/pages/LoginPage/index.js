@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import AuthInput from "../../components/AuthInput/index.js";
 import Button from "../../components/Button/index.js";
-// import Loader from "../../components/Loader/index.js";
+import Loader from "../../components/Loader/index.js";
 import { AuthContext } from "../../context/Auth.js";
 import {
   AuthTitle,
@@ -13,7 +13,8 @@ import {
 } from "./styled.js";
 
 const LoginPage = () => {
-  const { login, loginError, clearErrors } = useContext(AuthContext);
+  const { login, loginError, loginLoading, clearErrors } =
+    useContext(AuthContext);
 
   const handleLogin = async (values) => {
     login(values);
@@ -25,9 +26,9 @@ const LoginPage = () => {
     };
   }, [clearErrors]);
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (loginLoading) {
+    return <Loader />;
+  }
   return (
     <AuthWrapper>
       {loginError && (
